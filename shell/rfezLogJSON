@@ -1,0 +1,25 @@
+#!/bin/sh
+
+LOG_JSON_DATE="$(date -u +"%Y-%m-%dT%H%M%S.000Z")"
+LOG_JSON_SEVERITY="$(echo "${1}" | tr '[:lower:]' '[:upper:]')"
+
+case ${LOG_JSON_SEVERITY} in
+    DEBUG|DEB|DBG)
+        LOG_JSON_SEVERITY="DBG"
+        ;;
+
+    WARNING|WARN|WRN)
+        LOG_JSON_SEVERITY="WRN"
+        ;;
+
+    ERROR|ERR)
+        LOG_JSON_SEVERITY="ERR"
+        ;;
+
+    *)
+        LOG_JSON_SEVERITY="INF"
+        ;;
+esac
+
+
+printf '{"date": "%s", "severity": "%s", "message": "%s"}\n' ${LOG_JSON_DATE} ${LOG_JSON_SEVERITY} "${2}"
